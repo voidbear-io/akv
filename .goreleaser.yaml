@@ -116,6 +116,7 @@ changelog:
 nfpms:
   - id: deb-packages
     package_name: akv
+    file_name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-v{{ .Version }}"
     ids:
       - akv
     vendor: Frostyeti
@@ -138,6 +139,7 @@ nfpms:
 
   - id: rpm-packages
     package_name: akv
+    file_name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-v{{ .Version }}"
     ids:
       - akv
     vendor: Frostyeti
@@ -157,6 +159,7 @@ nfpms:
 
   - id: arch-packages
     package_name: akv
+    file_name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-v{{ .Version }}"
     ids:
       - akv
     vendor: Frostyeti
