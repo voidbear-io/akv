@@ -2,4 +2,4 @@ package cmd
 
 import "errors"
 
-var ErrNotImplemented = errors.New("not implemented")
+var ErrVaultURLRequired = errors.New("vault URL is required (set --vault-url or AKV_VAULT_URL)")

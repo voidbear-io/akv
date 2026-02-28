@@ -4,7 +4,6 @@ Copyright © 2026 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -35,16 +34,15 @@ func NewRootCmd() *cobra.Command {
 	cmd.AddCommand(secretsCmd)
 	cmd.AddCommand(newKeysCmd())
 	cmd.AddCommand(newCertificatesCmd())
+	cmd.AddCommand(newConfigCmd())
+	cmd.AddCommand(newVaultCmd())
+	cmd.AddCommand(newLsCmd()) // Root alias for "secrets ls"
 
 	for _, alias := range newSecretRootAliasCmds() {
 		cmd.AddCommand(alias)
 	}
 
-	return cmd
-}
+	cmd.PersistentFlags().String("vault-url", "", "Azure Key Vault URL (or AKV_VAULT_URL)")
 
-func newNotImplementedAction(operation string) func(*cobra.Command, []string) error {
-	return func(cmd *cobra.Command, args []string) error {
-		return fmt.Errorf("%w: %s", ErrNotImplemented, operation)
-	}
+	return cmd
 }

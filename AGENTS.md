@@ -29,12 +29,31 @@
 - use go generate to generate any code that can be generated, such as mocks, etc.
 - use go releaser to automate releases and versioning.
 
+## Versioning
+
+This project is currently in **alpha** stage. Unless explicitly instructed otherwise, when creating releases:
+- Only bump the prerelease version (e.g., `-alpha.0` → `-alpha.1`)
+- Do **NOT** increment major, minor, or patch versions (e.g., `0.1.0` → `0.1.0-alpha.1`, NOT `0.2.0-alpha.0`)
+- Wait for explicit instruction to bump major, minor, or patch versions
+
 ## Project Structure
 
 
 ```text
 .
+|-- .github/
+|   `-- workflows/
+|       |-- ci.yml
+|       `-- release.yml
+|-- .goreleaser.yaml
 |-- AGENTS.md
+|-- docs/
+|   `-- issues/
+|       |-- 0-setup-project.md
+|       |-- 1-implement.tests.md
+|       |-- 2-setup-github-actions.md
+|       |-- 3-create-docs.md
+|       `-- 4-features.md
 |-- go.mod
 |-- go.sum
 |-- LICENSE
@@ -42,15 +61,28 @@
 |-- mise.toml
 |-- cmd/
 |   |-- certificates.go
+|   |-- certificates_test.go
+|   |-- config.go
 |   |-- errors.go
+|   |-- flag_parsing.go
 |   |-- keys.go
+|   |-- keys_test.go
+|   |-- ls.go
 |   |-- root_test.go
 |   |-- root.go
-|   `-- secrets.go
-`-- issues/
-    |-- 0-setup-project.md
-    |-- 1-implement.tests.md
-    |-- 2-setup-github-actions.md
-    |-- 3-create-docs.md
-    `-- 4-features.md
+|   |-- secrets.go
+|   |-- secrets_test.go
+|   `-- vault.go
+`-- internal/
+    |-- auth/
+    |   `-- credential.go
+    |-- config/
+    |   `-- manager.go
+    `-- keyvault/
+        |-- certificates_service.go
+        |-- certificates_service_test.go
+        |-- keys_service.go
+        |-- keys_service_test.go
+        |-- secrets_service.go
+        `-- secrets_service_test.go
 ```
