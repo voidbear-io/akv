@@ -1,6 +1,6 @@
 module github.com/frostyeti/akv
 
-go 1.26.0
+go 1.25
 
 require (
 	github.com/99designs/keyring v1.2.2
