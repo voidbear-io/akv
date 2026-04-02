@@ -280,6 +280,7 @@ func TestUpdateCallsService(t *testing.T) {
 func TestResolveVaultURLError(t *testing.T) {
 	// Clear environment variable to ensure test isolation
 	t.Setenv("AKV_VAULT_URL", "")
+	t.Setenv("AKV_VAULT", "")
 	// Clear HOME to prevent config file lookup
 	t.Setenv("HOME", t.TempDir())
 
@@ -291,6 +292,27 @@ func TestResolveVaultURLError(t *testing.T) {
 
 	if _, err := resolveVaultURL(secretGet); !errors.Is(err, ErrVaultURLRequired) {
 		t.Fatalf("expected ErrVaultURLRequired, got %v", err)
+	}
+}
+
+func TestResolveVaultURLExpandsShortName(t *testing.T) {
+	t.Setenv("AKV_VAULT", "my-vault")
+	t.Setenv("AKV_VAULT_URL", "")
+	t.Setenv("HOME", t.TempDir())
+
+	root := NewRootCmd()
+	secretGet, _, err := root.Find([]string{"get"})
+	if err != nil {
+		t.Fatalf("failed to find get command: %v", err)
+	}
+
+	url, err := resolveVaultURL(secretGet)
+	if err != nil {
+		t.Fatalf("resolveVaultURL returned error: %v", err)
+	}
+
+	if url != "https://my-vault.vault.azure.net" {
+		t.Fatalf("expected expanded vault URL, got %q", url)
 	}
 }
 

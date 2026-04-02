@@ -44,10 +44,7 @@ func newSecretGetCmd() *cobra.Command {
 }
 
 func newSecretGetAliasCmd() *cobra.Command {
-	cmd := newSecretGetCmd()
-	cmd.Use = "get <name>"
-	cmd.Short = "Alias for secrets get"
-	return cmd
+	return newSecretGetCmd()
 }
 
 func writeSecretOutput(cmd *cobra.Command, values map[string]string, format string) error {

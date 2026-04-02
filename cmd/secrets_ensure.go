@@ -48,7 +48,5 @@ func newSecretEnsureCmd() *cobra.Command {
 }
 
 func newSecretEnsureAliasCmd() *cobra.Command {
-	cmd := newSecretEnsureCmd()
-	cmd.Short = "Alias for secrets ensure"
-	return cmd
+	return newSecretEnsureCmd()
 }

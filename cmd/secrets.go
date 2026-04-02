@@ -3,7 +3,9 @@ package cmd
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
+	"strings"
 
 	"github.com/frostyeti/akv/internal/config"
 	"github.com/frostyeti/akv/internal/keyvault"
@@ -67,25 +69,36 @@ func buildSecretService(cmd *cobra.Command) (secretService, error) {
 }
 
 func resolveVaultURL(cmd *cobra.Command) (string, error) {
-	// Check command line flag first
-	vaultURL, err := cmd.Root().PersistentFlags().GetString("vault-url")
+	vaultURL, err := cmd.Root().PersistentFlags().GetString("vault")
 	if err != nil {
 		return "", err
 	}
+	vaultURL = strings.TrimSpace(vaultURL)
+	if vaultURL != "" {
+		return normalizeVaultURL(vaultURL), nil
+	}
 
-	// Then check environment variable
+	vaultURL, err = cmd.Root().PersistentFlags().GetString("vault-url")
+	if err != nil {
+		return "", err
+	}
+	vaultURL = strings.TrimSpace(vaultURL)
+	if vaultURL == "" {
+		vaultURL = os.Getenv("AKV_VAULT")
+	}
 	if vaultURL == "" {
 		vaultURL = os.Getenv("AKV_VAULT_URL")
 	}
+	if vaultURL != "" {
+		return normalizeVaultURL(vaultURL), nil
+	}
 
 	// Finally check config for current vault
-	if vaultURL == "" {
-		mgr, err := config.NewManager()
+	mgr, err := config.NewManager()
+	if err == nil {
+		url, err := mgr.GetVaultURL("")
 		if err == nil {
-			url, err := mgr.GetVaultURL("")
-			if err == nil {
-				vaultURL = url
-			}
+			vaultURL = url
 		}
 	}
 
@@ -94,6 +107,16 @@ func resolveVaultURL(cmd *cobra.Command) (string, error) {
 	}
 
 	return vaultURL, nil
+}
+
+func normalizeVaultURL(value string) string {
+	if strings.HasPrefix(value, "https://") {
+		return value
+	}
+	if strings.Contains(value, ".vault.azure.net") {
+		return "https://" + value
+	}
+	return fmt.Sprintf("https://%s.vault.azure.net", value)
 }
 
 func handleSecretNotFound(err error) bool {

@@ -51,7 +51,5 @@ func newSecretSetCmd() *cobra.Command {
 }
 
 func newSecretSetAliasCmd() *cobra.Command {
-	cmd := newSecretSetCmd()
-	cmd.Short = "Alias for secrets set"
-	return cmd
+	return newSecretSetCmd()
 }

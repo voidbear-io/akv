@@ -60,9 +60,7 @@ func newSecretDeleteCmd() *cobra.Command {
 }
 
 func newSecretDeleteAliasCmd() *cobra.Command {
-	cmd := newSecretDeleteCmd()
-	cmd.Short = "Alias for secrets rm"
-	return cmd
+	return newSecretDeleteCmd()
 }
 
 func newSecretPurgeCmd() *cobra.Command {

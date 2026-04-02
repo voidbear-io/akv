@@ -7,7 +7,7 @@ import (
 func TestNewRootCmdContainsExpectedCommands(t *testing.T) {
 	root := NewRootCmd()
 
-	expected := []string{"secrets", "keys", "certificates", "get", "set", "rm", "ensure", "use"}
+	expected := []string{"secrets", "keys", "certificates", "get", "set", "rm", "ensure", "use", "version"}
 	for _, name := range expected {
 		if root.CommandPath() == name {
 			t.Fatalf("unexpected command path collision for %q", name)
