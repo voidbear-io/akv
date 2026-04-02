@@ -37,8 +37,13 @@ curl -fsSL https://raw.githubusercontent.com/frostyeti/akv/master/eng/script/ins
 Windows:
 
 ```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/frostyeti/akv/master/eng/script/install.ps1 -OutFile install.ps1
-.\install.ps1
+irm https://raw.githubusercontent.com/frostyeti/akv/master/eng/script/install.ps1 | iex
+```
+
+If PowerShell blocks the script, set the execution policy for the current process:
+
+```powershell
+Set-ExecutionPolicy Process Bypass -Force
 ```
 
 ### Release Assets
