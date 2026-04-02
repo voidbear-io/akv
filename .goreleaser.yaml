@@ -25,9 +25,6 @@ builds:
       - arm64
     goarm:
       - "7"
-    ignore:
-      - goos: windows
-        goarch: arm64
     ldflags:
       - -s -w
       - -X main.version={{.Version}}
@@ -54,6 +51,23 @@ archives:
 checksum:
   name_template: "{{ .ProjectName }}-checksums.txt"
   algorithm: sha256
+
+brews:
+  - name: akv
+    directory: Formula
+    repository:
+      owner: frostyeti
+      name: homebrew-tap
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    commit_msg_template: "Brew formula update for {{ .ProjectName }} {{ .Version }}"
+    homepage: https://github.com/frostyeti/akv
+    description: Azure Key Vault command-line interface
+    install: |
+      bin.install "akv"
+    test: |
+      system "#{bin}/akv", "--version"
 
 # Post-release hook to create winget manifests zip
 # This runs after winget pipe generates the manifests
@@ -198,7 +212,7 @@ winget:
       owner: frostyeti
       name: winget-pkgs
       branch: "akv-{{ .Version }}"
-      token: '{{ .Env.WINGET_TOKEN }}'
+      token: '{{ if .Env.WINGET_TOKEN }}{{ .Env.WINGET_TOKEN }}{{ else }}{{ .Env.GITHUB_TOKEN }}{{ end }}'
       pull_request:
         enabled: true
         draft: true
@@ -228,3 +242,25 @@ winget:
       - cli
       - cloud
       - security
+
+chocolateys:
+  - name: akv
+    title: akv
+    owners: Frostyeti
+    authors: Frostyeti
+    project_url: https://github.com/frostyeti/akv
+    icon_url: https://github.com/frostyeti/akv/raw/main/.github/assets/akv.png
+    license_url: https://github.com/frostyeti/akv/blob/main/LICENSE
+    require_license_acceptance: false
+    summary: Azure Key Vault command-line interface
+    description: |
+      akv is a command-line interface for managing Azure Key Vault resources including secrets, keys, and certificates.
+    tags:
+      - azure
+      - keyvault
+      - secrets
+      - cli
+      - security
+    release_notes: "{{ .Changelog }}"
+    release_notes_url: "https://github.com/frostyeti/akv/releases/tag/v{{ .Version }}"
+    skip_publish: true
