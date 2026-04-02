@@ -130,7 +130,7 @@ jobs:
         with:
           distribution: goreleaser
           version: '~> v2'
-          args: release --clean --skip announce,publish,validate,archive,brews,nfpm,srpm,arch,deb,rpm
+          args: release --clean --skip announce,publish,validate,archive,homebrew,nfpm,srpm,arch,deb,rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
