@@ -195,55 +195,6 @@ nfpms:
 
 # Chocolatey package configuration
 # Note: Package is built but NOT published automatically
-# Winget package configuration
-# Note: Package is built but NOT published automatically
-winget:
-  - name: akv
-    package_identifier: Frostyeti.akv
-    publisher: Frostyeti
-    publisher_url: https://github.com/frostyeti
-    publisher_support_url: https://github.com/frostyeti/akv/issues
-    url_template: "https://github.com/frostyeti/akv/releases/download/v{{ .Version }}/{{ .ArtifactName }}"
-    path: "manifests/f/Frostyeti/akv/{{ .Version }}"
-    commit_author:
-      name: goreleaserbot
-      email: bot@goreleaser.com
-    commit_msg_template: "{{ .PackageIdentifier }}: {{ .Version }}"
-    repository:
-      owner: frostyeti
-      name: winget-pkgs
-      branch: "akv-{{ .Version }}"
-      token: '{{ .Env.WINGET_TOKEN }}'
-      pull_request:
-        enabled: true
-        draft: true
-        base:
-          owner: microsoft
-          name: winget-pkgs
-          branch: master
-    homepage: "https://github.com/frostyeti/akv"
-    license: MIT
-    license_url: "https://github.com/frostyeti/akv/blob/main/LICENSE"
-    copyright: "2026 Frostyeti"
-    short_description: "Azure Key Vault command-line interface"
-    description: |
-      akv is a command-line interface for managing Azure Key Vault resources including secrets, keys, and certificates.
-      
-      Features:
-      - Get, set, delete secrets
-      - Manage keys
-      - Manage certificates
-      - Cross-platform support
-    release_notes: "{{ .Changelog }}"
-    release_notes_url: "https://github.com/frostyeti/akv/releases/tag/v{{ .Version }}"
-    tags:
-      - azure
-      - keyvault
-      - secrets
-      - cli
-      - cloud
-      - security
-
 chocolateys:
   - name: akv
     title: akv

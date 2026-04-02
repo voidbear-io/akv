@@ -81,21 +81,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name || github.event.inputs.version }}
-
-      - name: Package Winget manifests
-        run: |
-          chmod +x ./eng/scripts/package-winget-manifests.sh
-          ./eng/scripts/package-winget-manifests.sh "${GITHUB_REF_NAME:-${{ github.event.inputs.version }}}"
-
-      - name: Upload Winget manifests to release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: dist/akv-winget-manifests-v*.zip
-          tag_name: ${{ github.ref_name || github.event.inputs.version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate release summary
         run: |
@@ -106,7 +92,7 @@ jobs:
           echo "- Cross-platform binaries (Linux, macOS, Windows)" >> release-summary.md
           echo "- Archive formats: tar.gz, zip" >> release-summary.md
           echo "- Linux packages: deb, rpm, arch (pacman)" >> release-summary.md
-          echo "- Windows packages: chocolatey, winget (metadata only)" >> release-summary.md
+          echo "- Windows packages: chocolatey" >> release-summary.md
           echo "" >> release-summary.md
           echo "## Installation" >> release-summary.md
           echo "" >> release-summary.md
@@ -144,9 +130,8 @@ jobs:
         with:
           distribution: goreleaser
           version: '~> v2'
-          args: release --clean --skip announce,publish,validate,archive,brews,winget,nfpm,srpm,arch,deb,rpm
+          args: release --clean --skip announce,publish,validate,archive,brews,nfpm,srpm,arch,deb,rpm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name || github.event.inputs.version }}
