@@ -255,12 +255,6 @@ chocolateys:
     summary: Azure Key Vault command-line interface
     description: |
       akv is a command-line interface for managing Azure Key Vault resources including secrets, keys, and certificates.
-    tags:
-      - azure
-      - keyvault
-      - secrets
-      - cli
-      - security
+    tags: azure keyvault secrets cli security
     release_notes: "{{ .Changelog }}"
-    release_notes_url: "https://github.com/frostyeti/akv/releases/tag/v{{ .Version }}"
     skip_publish: true
