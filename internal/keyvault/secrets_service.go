@@ -10,7 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
-	"github.com/frostyeti/akv/internal/auth"
+	"github.com/voidbear-io/akv/internal/auth"
 )
 
 var ErrSecretNotFound = errors.New("secret not found")

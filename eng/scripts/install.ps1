@@ -12,7 +12,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 # Configuration
-$Repo = "frostyeti/akv"
+$Repo = "voidbear-io/akv"
 $BinaryName = "akv.exe"
 
 # Colors for output

@@ -1,0 +1,25 @@
+
+tasks:
+  build:
+    run: go build -o bin/akv .
+    use: shell
+
+  test:
+    run: go test -v ./...
+    use: shell
+
+  test-e2e:
+    run: go test -v -tags=integration ./test/e2e
+    use: shell
+
+  lint:
+    run: golangci-lint run ./...
+    use: shell
+
+  format:
+    run: go fmt ./...
+    use: shell
+
+  vuln:
+    run: govulncheck ./...
+    use: shell

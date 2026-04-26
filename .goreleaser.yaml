@@ -56,14 +56,14 @@ brews:
   - name: akv
     directory: Formula
     repository:
-      owner: frostyeti
+      owner: voidbear-io
       name: homebrew-tap
       token: '{{ .Env.HOMEBREW_TAP_TOKEN }}'
     commit_author:
       name: goreleaserbot
       email: bot@goreleaser.com
     commit_msg_template: "Brew formula update for {{ .ProjectName }} {{ .Version }}"
-    homepage: https://github.com/frostyeti/akv
+    homepage: https://github.com/voidbear-io/akv
     description: Azure Key Vault command-line interface
     install: |
       bin.install "akv"
@@ -74,7 +74,7 @@ brews:
 # This runs after winget pipe generates the manifests
 release:
   github:
-    owner: frostyeti
+    owner: voidbear-io
     name: akv
   draft: false
   prerelease: auto
@@ -134,9 +134,9 @@ nfpms:
     file_name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-v{{ .Version }}"
     ids:
       - akv
-    vendor: Frostyeti
-    homepage: https://github.com/frostyeti/akv
-    maintainer: Frostyeti <noreply@frostyeti.dev>
+    vendor: Mr VoidBear
+    homepage: https://github.com/voidbear-io/akv
+    maintainer: Mr VoidBear <noreply@voidbear.io>
     description: Azure Key Vault command-line interface
     license: MIT
     formats:
@@ -157,9 +157,9 @@ nfpms:
     file_name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-v{{ .Version }}"
     ids:
       - akv
-    vendor: Frostyeti
-    homepage: https://github.com/frostyeti/akv
-    maintainer: Frostyeti <noreply@frostyeti.dev>
+    vendor: Mr VoidBear
+    homepage: https://github.com/voidbear-io/akv
+    maintainer: Mr VoidBear <noreply@voidbear.io>
     description: Azure Key Vault command-line interface
     license: MIT
     formats:
@@ -177,9 +177,9 @@ nfpms:
     file_name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}-v{{ .Version }}"
     ids:
       - akv
-    vendor: Frostyeti
-    homepage: https://github.com/frostyeti/akv
-    maintainer: Frostyeti <noreply@frostyeti.dev>
+    vendor: Mr VoidBear
+    homepage: https://github.com/voidbear-io/akv
+    maintainer: Mr VoidBear <noreply@voidbear.io>
     description: Azure Key Vault command-line interface
     license: MIT
     formats:
@@ -191,18 +191,18 @@ nfpms:
     bindir: /usr/bin
     archlinux:
       pkgbase: akv
-      packager: Frostyeti <noreply@frostyeti.dev>
+      packager: Mr VoidBear <noreply@voidbear.io>
 
 # Chocolatey package configuration
 # Note: Package is built but NOT published automatically
 chocolateys:
   - name: akv
     title: akv
-    owners: Frostyeti
-    authors: Frostyeti
-    project_url: https://github.com/frostyeti/akv
-    icon_url: https://github.com/frostyeti/akv/raw/main/.github/assets/akv.png
-    license_url: https://github.com/frostyeti/akv/blob/main/LICENSE
+    owners: Mr VoidBear
+    authors: Mr VoidBear
+    project_url: https://github.com/voidbear-io/akv
+    icon_url: https://github.com/voidbear-io/akv/raw/main/.github/assets/akv.png
+    license_url: https://github.com/voidbear-io/akv/blob/main/LICENSE
     require_license_acceptance: false
     summary: Azure Key Vault command-line interface
     description: |

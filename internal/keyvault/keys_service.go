@@ -8,7 +8,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
-	"github.com/frostyeti/akv/internal/auth"
+	"github.com/voidbear-io/akv/internal/auth"
 )
 
 var ErrKeyNotFound = errors.New("key not found")

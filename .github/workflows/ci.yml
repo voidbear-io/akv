@@ -2,33 +2,38 @@ name: CI
 
 on:
   push:
-    branches: ['*']
   pull_request:
-    branches: [main]
+  schedule:
+    # Monday 06:00 UTC — periodic dependency / vulnerability check
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint-and-test:
+  lint:
+    if: github.event_name != 'schedule'
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v6
 
       - name: Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: '1.26.x'
+          go-version: "1.26.x"
           cache: true
 
-      - name: Install mise
-        uses: jdx/mise-action@v4
-        with:
-          install: false
+      - name: Check go mod
+        run: go mod tidy && git diff --exit-code
 
-      - name: Format check
+      - name: Check formatting
         run: |
-          if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
-            echo "Go code is not formatted:"
-            gofmt -s -l .
+          if [ -n "$(go fmt ./...)" ]; then
+            echo "Go code is not formatted. Run 'go fmt ./...'"
             exit 1
           fi
 
@@ -38,17 +43,77 @@ jobs:
       - name: Install golangci-lint
         run: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.64.5
-        continue-on-error: true
 
       - name: Lint
-        run: golangci-lint run ./... || true
-        continue-on-error: true
+        run: golangci-lint run ./...
+
+  vulnerability:
+    name: Vulnerability check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.26.x"
+          cache: true
+
+      - name: Install govulncheck
+        run: go install golang.org/x/vuln/cmd/govulncheck@latest
+
+      - name: Run govulncheck
+        run: govulncheck ./...
+
+  build-and-test:
+    if: github.event_name != 'schedule'
+    name: Build and Test
+    strategy:
+      matrix:
+        go-version: ["1.26.x"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ${{ matrix.go-version }}
+          cache: true
+
+      - name: Build
+        run: go build -v ./...
 
       - name: Run tests
-        run: go test -v -race -coverprofile=coverage.out ./...
+        shell: bash
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
+          else
+            go test -v -race ./...
+          fi
+
+      - name: Run integration tests
+        run: go test -v -tags=integration ./...
+
+      - name: Cross-compile smoke
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o /dev/null ./...
+          GOOS=linux GOARCH=arm64 go build -o /dev/null ./...
+          GOOS=darwin GOARCH=amd64 go build -o /dev/null ./...
+          GOOS=darwin GOARCH=arm64 go build -o /dev/null ./...
+          GOOS=windows GOARCH=amd64 go build -o /dev/null ./...
+          GOOS=windows GOARCH=arm64 go build -o /dev/null ./...
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
+        if: matrix.os == 'ubuntu-latest'
         with:
           name: coverage-report
           path: coverage.out
@@ -57,47 +122,7 @@ jobs:
       # Uncomment when Codecov is configured
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v4
+      #   if: matrix.os == 'ubuntu-latest'
       #   with:
       #     file: ./coverage.out
       #     fail_ci_if_error: true
-
-  govulncheck:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: '1.26.x'
-
-      - name: Install govulncheck
-        run: go install golang.org/x/vuln/cmd/govulncheck@latest
-
-      - name: Run govulncheck
-        run: govulncheck ./...
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: '1.26.x'
-          cache: true
-
-      - name: Build
-        run: go build -v ./...
-
-      - name: Build all platforms (smoke test)
-        run: |
-          GOOS=linux GOARCH=amd64 go build -o /dev/null ./...
-          GOOS=linux GOARCH=arm64 go build -o /dev/null ./...
-          GOOS=darwin GOARCH=amd64 go build -o /dev/null ./...
-          GOOS=darwin GOARCH=arm64 go build -o /dev/null ./...
-          GOOS=windows GOARCH=amd64 go build -o /dev/null ./...
-          GOOS=windows GOARCH=arm64 go build -o /dev/null ./...

@@ -83,7 +83,7 @@ func upgradeBinary(destPath, version string, preRelease bool) error {
 	if err != nil {
 		return err
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	archivePath := filepath.Join(tmpDir, "akv."+archiveExt)
 	if err := downloadToFile(assetURL, archivePath); err != nil {
@@ -103,7 +103,7 @@ func upgradeBinary(destPath, version string, preRelease bool) error {
 }
 
 func fetchRelease(version string, preRelease bool) (*githubRelease, error) {
-	url := releaseAPIURL("frostyeti", "akv", version, preRelease)
+	url := releaseAPIURL("voidbear-io", "akv", version, preRelease)
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -115,7 +115,7 @@ func fetchRelease(version string, preRelease bool) (*githubRelease, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
@@ -169,7 +169,7 @@ func downloadToFile(url, dest string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("download failed: %s", resp.Status)
 	}
@@ -178,7 +178,7 @@ func downloadToFile(url, dest string) error {
 	if err != nil {
 		return err
 	}
-	defer out.Close()
+	defer func() { _ = out.Close() }()
 	_, err = io.Copy(out, resp.Body)
 	return err
 }
@@ -189,7 +189,7 @@ func extractUpgradeArchive(archive, dir string) error {
 		if err != nil {
 			return err
 		}
-		defer zr.Close()
+		defer func() { _ = zr.Close() }()
 		for _, file := range zr.File {
 			if filepath.Base(file.Name) != binaryName() {
 				continue
@@ -201,15 +201,15 @@ func extractUpgradeArchive(archive, dir string) error {
 			outPath := filepath.Join(dir, binaryName())
 			out, err := os.Create(outPath)
 			if err != nil {
-				rc.Close()
+				_ = rc.Close()
 				return err
 			}
 			if _, err := io.Copy(out, rc); err != nil {
-				rc.Close()
-				out.Close()
+				_ = rc.Close()
+				_ = out.Close()
 				return err
 			}
-			rc.Close()
+			_ = rc.Close()
 			if err := out.Close(); err != nil {
 				return err
 			}
@@ -222,13 +222,13 @@ func extractUpgradeArchive(archive, dir string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	gzr, err := gzip.NewReader(f)
 	if err != nil {
 		return err
 	}
-	defer gzr.Close()
+	defer func() { _ = gzr.Close() }()
 
 	tr := tar.NewReader(gzr)
 	for {
@@ -252,7 +252,7 @@ func extractUpgradeArchive(archive, dir string) error {
 			return err
 		}
 		if _, err := io.Copy(out, tr); err != nil {
-			out.Close()
+			_ = out.Close()
 			return err
 		}
 		if err := out.Close(); err != nil {

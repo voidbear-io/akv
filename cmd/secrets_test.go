@@ -6,8 +6,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/frostyeti/akv/internal/keyvault"
 	"github.com/spf13/cobra"
+	"github.com/voidbear-io/akv/internal/keyvault"
 )
 
 type mockSecretService struct {

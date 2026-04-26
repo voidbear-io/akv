@@ -2,14 +2,13 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"strings"
 
-	"github.com/frostyeti/akv/internal/config"
-	"github.com/frostyeti/akv/internal/keyvault"
 	"github.com/spf13/cobra"
+	"github.com/voidbear-io/akv/internal/config"
+	"github.com/voidbear-io/akv/internal/keyvault"
 )
 
 type secretService interface {
@@ -117,8 +116,4 @@ func normalizeVaultURL(value string) string {
 		return "https://" + value
 	}
 	return fmt.Sprintf("https://%s.vault.azure.net", value)
-}
-
-func handleSecretNotFound(err error) bool {
-	return errors.Is(err, keyvault.ErrSecretNotFound)
 }

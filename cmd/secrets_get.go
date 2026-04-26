@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/frostyeti/go/dotenv"
 	"github.com/spf13/cobra"
+	"github.com/voidbear-io/go/dotenv"
 )
 
 func newSecretGetCmd() *cobra.Command {
@@ -107,7 +107,7 @@ func writeSecretOutput(cmd *cobra.Command, values map[string]string, format stri
 		if err != nil {
 			return fmt.Errorf("opening CAST_SECRETS file failed: %w", err)
 		}
-		defer f.Close()
+		defer func() { _ = f.Close() }()
 		for key, value := range values {
 			if strings.ContainsAny(value, "\r\n") {
 				if _, err := fmt.Fprintf(f, "%s<< EOF\n%s\nEOF\n", toScreamingSnakeCase(key), value); err != nil {

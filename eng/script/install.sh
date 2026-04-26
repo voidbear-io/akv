@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="frostyeti/akv"
+REPO="voidbear-io/akv"
 API_URL="https://api.github.com/repos/${REPO}/releases/latest"
 
 OS="$(uname -s)"

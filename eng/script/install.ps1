@@ -4,7 +4,7 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-$Repo = "frostyeti/akv"
+$Repo = "voidbear-io/akv"
 $ApiUrl = if ($Version -eq "latest") { "https://api.github.com/repos/$Repo/releases/latest" } else { "https://api.github.com/repos/$Repo/releases/tags/$Version" }
 
 if ($IsWindows -or [System.Environment]::OSVersion.Platform -eq "Win32NT") {

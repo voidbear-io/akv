@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates"
-	"github.com/frostyeti/akv/internal/auth"
+	"github.com/voidbear-io/akv/internal/auth"
 )
 
 var ErrCertificateNotFound = errors.New("certificate not found")

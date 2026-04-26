@@ -9,8 +9,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/frostyeti/akv/internal/keyvault"
 	"github.com/spf13/cobra"
+	"github.com/voidbear-io/akv/internal/keyvault"
 	pkcs12 "software.sslmate.com/src/go-pkcs12"
 )
 

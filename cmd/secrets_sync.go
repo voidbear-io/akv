@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/frostyeti/akv/internal/keyvault"
 	"github.com/spf13/cobra"
+	"github.com/voidbear-io/akv/internal/keyvault"
 )
 
 type secretSync struct {
@@ -106,7 +106,7 @@ func syncSecretValue(cmd *cobra.Command, service secretService, name string, val
 		return err
 	}
 
-	if err == nil && value != nil && current.Secret.Value != nil && *current.Secret.Value == *value {
+	if err == nil && value != nil && current.Value != nil && *current.Value == *value {
 		return nil
 	}
 

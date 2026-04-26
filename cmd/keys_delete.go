@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/frostyeti/akv/internal/keyvault"
 	"github.com/spf13/cobra"
+	"github.com/voidbear-io/akv/internal/keyvault"
 )
 
 func newKeyDeleteCmd() *cobra.Command {

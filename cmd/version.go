@@ -7,7 +7,7 @@ import (
 )
 
 // Version is the CLI version string.
-var Version = "0.0.0"
+var Version = "0.0.0-alpha.0"
 
 func newVersionCmd() *cobra.Command {
 	return &cobra.Command{

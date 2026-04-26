@@ -1,4 +1,4 @@
-module github.com/frostyeti/akv
+module github.com/voidbear-io/akv
 
 go 1.25
 
@@ -9,10 +9,10 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates v1.4.0
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys v1.4.0
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets v1.4.0
-	github.com/frostyeti/go/dotenv v0.0.0
 	github.com/gobwas/glob v0.2.3
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
+	github.com/voidbear-io/go/dotenv v0.0.0-alpha.0
 	software.sslmate.com/src/go-pkcs12 v0.7.0
 )
 

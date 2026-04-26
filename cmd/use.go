@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/frostyeti/akv/internal/config"
 	"github.com/spf13/cobra"
+	"github.com/voidbear-io/akv/internal/config"
 )
 
 func newUseCmd() *cobra.Command {

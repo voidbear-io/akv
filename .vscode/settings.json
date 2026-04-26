@@ -1,0 +1,8 @@
+{
+  "yaml.schemas": {
+    "castfile": "https://raw.githubusercontent.com/voidbear-io/cast/refs/heads/master/schemas/castfile.schema.json"
+  },
+  "files.associations": {
+    "castfile": "yaml"
+  }
+}
