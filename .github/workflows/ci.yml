@@ -40,9 +40,10 @@ jobs:
       - name: Vet
         run: go vet ./...
 
+      # Build from source with the same Go toolchain as CI so the binary matches
+      # the language version in go.mod (prebuilt releases can lag behind, e.g. 1.24 < 1.25).
       - name: Install golangci-lint
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.64.5
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.5
 
       - name: Lint
         run: golangci-lint run ./...
